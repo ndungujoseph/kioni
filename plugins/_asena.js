@@ -21,7 +21,7 @@ if (Config.WORKTYPE == 'private') {
         if (match[1] === '') {
             Asena.commands.map(
                 async (command) =>  {
-                    if (command.dontAddCommandList || command.pattern === undefined) return;
+                    if (command.dontAddCommandList || command.pattern === undefined) return;
                     try {
                         var match = command.pattern.toString().match(/(\W*)([A-Za-zğüşıiöç1234567890 ]*)/);
                     } catch {
@@ -44,14 +44,14 @@ if (Config.WORKTYPE == 'private') {
             );
         
             await message.client.sendMessage(
-                message.jid,'●▬▬▬ *WhatsAsena Private* ▬▬▬●\n\n' + CMD_HELP, MessageType.text
+                message.jid,'●▬▬▬ * Kioni Ndungu Assistant Private* ▬▬▬●\n\n' + CMD_HELP, MessageType.text
             );    
         } else {
 
             var CMD_HELP = '';
             Asena.commands.map(
                 async (command) =>  {
-                    if (command.dontAddCommandList || command.pattern === undefined) return;
+                    if (command.dontAddCommandList || command.pattern === undefined) return;
                     try {
                         var cmatch = command.pattern.toString().match(/(\W*)([A-Za-zğüşıiöç1234567890 ]*)/);
                     } catch {
@@ -76,7 +76,7 @@ if (Config.WORKTYPE == 'private') {
             );
             if (CMD_HELP === '') CMD_HELP += Lang.NOT_FOUND;
             await message.client.sendMessage(
-                message.jid,'●▬▬▬ *WhatsAsena Private* ▬▬▬●\n\n' + CMD_HELP, MessageType.text
+                message.jid,'●▬▬▬ * Kioni Ndungu Assistant Private* ▬▬▬●\n\n' + CMD_HELP, MessageType.text
             );
         }
     }));
@@ -89,7 +89,7 @@ else if (Config.WORKTYPE == 'public') {
         if (match[1] === '') {
             Asena.commands.map(
                 async (command) =>  {
-                    if (command.dontAddCommandList || command.pattern === undefined) return;
+                    if (command.dontAddCommandList || command.pattern === undefined) return;
                     try {
                         var match = command.pattern.toString().match(/(\W*)([A-Za-zğüşıiöç1234567890 ]*)/);
                     } catch {
@@ -112,14 +112,14 @@ else if (Config.WORKTYPE == 'public') {
             );
         
             await message.client.sendMessage(
-                message.jid,'●▬▬▬ *WhatsAsena Public* ▬▬▬●\n\n' + CMD_HELP, MessageType.text
+                message.jid,'●▬▬▬ * Kioni Ndungu Assistant Public* ▬▬▬●\n\n' + CMD_HELP, MessageType.text
             );    
         } else {
 
             var CMD_HELP = '';
             Asena.commands.map(
                 async (command) =>  {
-                    if (command.dontAddCommandList || command.pattern === undefined) return;
+                    if (command.dontAddCommandList || command.pattern === undefined) return;
                     try {
                         var cmatch = command.pattern.toString().match(/(\W*)([A-Za-zğüşiıöç1234567890 ]*)/);
                     } catch {
@@ -144,7 +144,7 @@ else if (Config.WORKTYPE == 'public') {
             );
             if (CMD_HELP === '') CMD_HELP += Lang.NOT_FOUND;
             await message.client.sendMessage(
-                message.jid,'●▬▬▬ *WhatsAsena Public* ▬▬▬●\n\n' + CMD_HELP, MessageType.text
+                message.jid,'●▬▬▬ * Kioni Ndungu Assistant Public* ▬▬▬●\n\n' + CMD_HELP, MessageType.text
             );
         }
     }));
@@ -154,7 +154,7 @@ else if (Config.WORKTYPE == 'public') {
         if (match[1] === '') {
             Asena.commands.map(
                 async (command) =>  {
-                    if (command.dontAddCommandList || command.pattern === undefined) return;
+                    if (command.dontAddCommandList || command.pattern === undefined) return;
                     try {
                         var match = command.pattern.toString().match(/(\W*)([A-Za-zğüşiıöç1234567890 ]*)/);
                     } catch {
@@ -177,14 +177,14 @@ else if (Config.WORKTYPE == 'public') {
             );
         
             await message.client.sendMessage(
-                message.jid,'●▬▬▬ *WhatsAsena Public* ▬▬▬●\n\n' + CMD_HELP, MessageType.text
+                message.jid,'●▬▬▬ * Kioni Ndungu Assistant Public* ▬▬▬●\n\n' + CMD_HELP, MessageType.text
             );    
         } else {
 
             var CMD_HELP = '';
             Asena.commands.map(
                 async (command) =>  {
-                    if (command.dontAddCommandList || command.pattern === undefined) return;
+                    if (command.dontAddCommandList || command.pattern === undefined) return;
                     try {
                         var cmatch = command.pattern.toString().match(/(\W*)([A-Za-zğüşiıöç1234567890 ]*)/);
                     } catch {
@@ -209,7 +209,7 @@ else if (Config.WORKTYPE == 'public') {
             );
             if (CMD_HELP === '') CMD_HELP += Lang.NOT_FOUND;
             await message.client.sendMessage(
-                message.jid,'●▬▬▬ *WhatsAsena Public* ▬▬▬●\n\n' + CMD_HELP, MessageType.text
+                message.jid,'●▬▬▬ * Kioni Ndungu Assistant Public* ▬▬▬●\n\n' + CMD_HELP, MessageType.text
             );
         }
     }));
