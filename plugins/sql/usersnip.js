@@ -2,7 +2,7 @@
 Telegram: t.me/phaticusthiccy
 Instagram: www.instagram.com/kyrie.baran
 */
- 
+
 const config = require('../../config');
 const { DataTypes } = require('sequelize');
 
