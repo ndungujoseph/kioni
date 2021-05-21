@@ -9,6 +9,7 @@ WhatsAsena - Yusuf Usta
 const Asena = require('../events');
 const {MessageType} = require('@adiwajshing/baileys');
 const FilterDb = require('./sql/filters');
+const SnipDB = require('./sql/usersnip');
 
 const Language = require('../language');
 const Lang = Language.getString('filters');
@@ -55,10 +56,94 @@ Asena.addCommand({on: 'text', fromMe: false}, (async (message, match) => {
     if (!filtreler) return; 
     filtreler.map(
         async (filter) => {
-            pattern = new RegExp(filter.dataValues.regex ? filter.dataValues.pattern : ('\\b(' + filter.dataValues.pattern + ')\\b'), 'gm');
+            pattern = new RegExp(filter.dataValues.regex ? filter.dataValues.pattern : ('\\b(' + filter.dataValues.pattern + ')\\b'), 'i');
             if (pattern.test(message.message)) {
-                await new Promise(r => setTimeout(r, 1000));
                 await message.client.sendMessage(message.jid,filter.dataValues.text, MessageType.text, {quoted: message.data});
+            }
+        }
+    );
+}));
+const snipds = "Snip ayarlar"
+const dbsl = "Bir Metni Yanıtla! Örnek: ```.snip test```"
+const scc = "Adlı Snip Ayarlandı!"
+const xsbl = "Lütfen snip ismi gir! Örnek: ```.snip test```"
+
+Asena.addCommand({pattern: 'snip ?(.*)', fromMe: true, desc: snipds}, (async (message, match) => {
+
+    if (!message.reply_message.text && match[1].length < 2 ) {
+        return await message.client.sendMessage(
+            message.jid,
+            dbsl,
+            MessageType.text
+        )
+    }
+    if (message.reply_message.text && match[1].length < 2) {
+        return await message.client.sendMessage(
+            message.jid,
+            xsbl,
+            MessageType.text
+        )
+    }
+    await SnipDB.saveSnip(message.reply_message.text)
+    return await message.client.sendMessage(
+        message.jid,
+        '```' + mat + '``` ' + scc,
+        MessageType.text
+    )
+}));
+const gtsn = "Kayıtlı snip'leri gösterir."
+const hatc = "Hiç Snip Kaydedilmemiş!"
+
+Asena.addCommand({pattern: 'getsnip', fromMe: true, desc: gtsn}, (async (message, match) => {
+
+    const _snips = await SnipDB.getSnip()
+    const snips = []
+    _snips.map(snip => {
+        snip.push('$' + snip.snip)
+    })
+    if (snips.length < 2) {
+        return await message.client.sendMessage(
+            message.jid,
+            '*' + hatc + '*',
+            MessageType.text
+        )
+    }
+}));
+const flsh = "Snip siler"
+const dlsnp = "Böyle Bir Snip Yok!"
+const shck = "Adlı Snip Silindi!"
+
+Asena.addCommand({ pattern: 'delsnip ?(.*)', fromMe: true, desc: flsh }, (async (message, match) => {
+    
+    const mat = match[1] 
+    delsnp = await SnipDB.deleteSnip(mat);
+    
+    if (!delsnp) {
+        await message.client.sendMessage(
+            message.jid,
+            '```' + dlsnp + '```',
+            MessageType.text
+        )
+    } 
+    else {
+        await message.client.sendMessage(
+            message.jid,
+            '```' + mat + '``` ' + shck, 
+            MessageType.text
+        )
+    }
+}));
+    
+Asena.addCommand({pattern: '- ?(.*)', fromMe: true, dontAddCommandList: true }, (async (message, match) => {
+    const mat = match[1]
+
+    var snip = await SnipDB.getSnip();
+    if (snip !== match[1]) return await message.sendMessage(dlsnp); 
+    snip.map(
+        async (snip) => {
+            pattern = new RegExp(snip.dataValues.regex ? snip.dataValues.pattern : ('\\b(' + snip.dataValues.pattern + ')\\b'), 'i');
+            if (pattern.test(message.message)) {
+                await message.client.sendMessage(message.jid,snip.dataValues.text, MessageType.text, {quoted: message.data});
             }
         }
     );
