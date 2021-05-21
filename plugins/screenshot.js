@@ -9,46 +9,36 @@ const fs = require('fs');
 const axios = require('axios');
 const request = require('request');
 const got = require("got");
-const Config = require('../config');
 
 const Language = require('../language');
 const Lang = Language.getString('webss');
 
-if (Config.WORKTYPE == 'private') {
+Asena.addCommand({pattern: 'ss ?(.*)', fromMe: true, desc: Lang.SS_DESC}, (async (message, match) => {
 
-    Asena.addCommand({pattern: 'ss ?(.*)', fromMe: true, desc: Lang.SS_DESC}, (async (message, match) => {
+    if (match[1] === '') return await message.sendMessage(Lang.LİNK);
 
-        if (match[1] === '') return await message.sendMessage(Lang.LİNK);
+    var webimage = await axios.get(`https://screenshotapi.net/api/v1/screenshot?url=${match[1]}&output=image&full_page=true`, { responseType: 'arraybuffer' })
 
-        var webimage = await axios.get(`https://screenshotapi.net/api/v1/screenshot?url=${match[1]}&output=image&full_page=true&delay=400`, { responseType: 'arraybuffer' })
+    await message.sendMessage(Buffer.from(webimage.data), MessageType.image, {mimetype: Mimetype.jpg, caption: 'Made by Kioni Ndungu. Powered by I.T H.A.C.K.S.'})
 
-        await message.sendMessage(Buffer.from(webimage.data), MessageType.image, {mimetype: Mimetype.jpg, caption: 'Made by Kioni Ndungu. Promoted by I.T H.A.C.K.S.'})
+}));
 
-    }));
-}
-else if (Config.WORKTYPE == 'public') {
+const sh = "Yapay zeka ile daha önce olmayan insan yüzleri üretir."
+Asena.addCommand({pattern: 'faceai', fromMe: true, desc: sh}, (async (message, match) => {
 
-    Asena.addCommand({pattern: 'ss ?(.*)', fromMe: false, desc: Lang.SS_DESC}, (async (message, match) => {
+    var webimage = await axios.get('https://screenshotapi.net/api/v1/screenshot?url=https://thispersondoesnotexist.com/&output=image&width=1000&height=1000', { responseType: 'arraybuffer' })
 
-        if (match[1] === '') return await message.sendMessage(Lang.LİNK);
+    await message.sendMessage(Buffer.from(webimage.data), MessageType.image, {mimetype: Mimetype.jpg, caption: 'Made by Kioni Ndungu. Powered by I.T H.A.C.K.S.'})
 
-        var webimage = await axios.get(`https://screenshotapi.net/api/v1/screenshot?url=${match[1]}&output=image&full_page=true&delay=400`, { responseType: 'arraybuffer' })
+}));
 
-        await message.sendMessage(Buffer.from(webimage.data), MessageType.image, {mimetype: Mimetype.jpg, caption: 'Made by Kioni Ndungu. Promoted by I.T H.A.C.K.S.'})
+const dh = "Yapay zeka ile daha önce olmayan anime yüzleri üretir."
+Asena.addCommand({pattern: 'animai', fromMe: true, desc: dh}, (async (message, match) => {
 
-    }));
-    Asena.addCommand({pattern: 'ss ?(.*)', fromMe: true, desc: Lang.SS_DESC, dontAddCommandList: true}, (async (message, match) => {
+    var webimage = await axios.get('https://screenshotapi.net/api/v1/screenshot?url=https://www.thiswaifudoesnotexist.net/&output=image&width=1000&height=1000&retina=true&full_page=false', { responseType: 'arraybuffer' })
 
-        if (match[1] === '') return await message.sendMessage(Lang.LİNK);
+    await message.sendMessage(Buffer.from(webimage.data), MessageType.image, {mimetype: Mimetype.jpg, caption: 'Made by Kioni Ndungu. Powered by I.T H.A.C.K.S.'})
 
-        var webimage = await axios.get(`https://screenshotapi.net/api/v1/screenshot?url=${match[1]}&output=image&full_page=true&delay=400`, { responseType: 'arraybuffer' })
-
-        await message.sendMessage(Buffer.from(webimage.data), MessageType.image, {mimetype: Mimetype.jpg, caption: 'Made by Kioni Ndungu. Promoted by I.T H.A.C.K.S.'})
-
-    }));
-}
-
-
-
+}));
 
 
