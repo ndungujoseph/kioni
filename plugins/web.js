@@ -9,12 +9,9 @@ WhatsAsena - Yusuf Usta
 const Asena = require('../events');
 const {MessageType} = require('@adiwajshing/baileys');
 const speedTest = require('@lh2020/speedtest-net');
-const TinyURL = require('tinyurl');
-const Config = require('../config');
 
 const Language = require('../language');
 const Lang = Language.getString('web');
-const SLang = Language.getString('webss');
 
 // https://github.com/ddsol/speedtest.net/blob/master/bin/index.js#L86
 function speedText(speed) {
@@ -29,6 +26,82 @@ function speedText(speed) {
 
     return `${bits.toFixed(places[unit])} ${units[unit]}bps`;
 }
+
+const calc = "Basit matematik işlemleri için hesap makinesi."
+Asena.addCommand({pattern: 'calc ?(.*)', fromMe: true, desc: calc}, (async (message, match) => {
+    if (!message.reply_message) {
+        if (match[1].length < 4) { return await message.client.sendMessage(message.jid,'*Lütfen Geçerli Olan Şekilde Kullanın!* \n*.calc 1 + 2*\n*.calc 3 x 5*\n*.calc 10 / 5*\n*.calc 5 - 2* \n*.calc 100 % 5*', MessageType.text) }
+        else if (match[1].includes('+')) { var split = match[1].split('+'), sonsayi = split[1], ilksayi = split[0]
+            var resp = -(-ilksayi - sonsayi)
+            try { await message.client.sendMessage(message.jid,'*Hesaplama Yapıldı ✅*\n*Sonuç:* ' + resp, MessageType.text) }
+            catch (err) { return await message.client.sendMessage(message.jid,'*Hesaplama Yapılamadı ❌*\n*Hata:* \n' + err,MessageType.text);
+            }
+        }
+        else if (match[1].includes('-')) { var split = match[1].split('-'), sonsayicik = split[1], ilksayicik = split[0] 
+            var result = ilksayicik - sonsayicik
+            try { await message.client.sendMessage(message.jid,'*Hesaplama Yapıldı ✅*\n*Sonuç:* ' + result, MessageType.text) }
+            catch (err) { return await message.client.sendMessage(message.jid,'*Hesaplama Yapılamadı ❌*\n*Hata:* \n' + err,MessageType.text);
+            }
+        }
+        else if (match[1].includes('x')) { var split = match[1].split('x'), sonsayicarp = split[1], ilksayicarp = split[0] 
+            var result = ilksayicarp * sonsayicarp
+            try { await message.client.sendMessage(message.jid,'*Hesaplama Yapıldı ✅*\n*Sonuç:* ' + result, MessageType.text) }
+            catch (err) { return await message.client.sendMessage(message.jid,'*Hesaplama Yapılamadı ❌*\n*Hata:* \n' + err,MessageType.text);
+            }
+        }
+        else if (match[1].includes('/')) { var split = match[1].split('/'), sonsayibol = split[1], ilksayibol = split[0] 
+            var result = ilksayibol / sonsayibol
+            try { await message.client.sendMessage(message.jid,'*Hesaplama Yapıldı ✅*\n*Sonuç:* ' + result, MessageType.text) }
+            catch (err) { return await message.client.sendMessage(message.jid,'*Hesaplama Yapılamadı ❌*\n*Hata:* \n' + err,MessageType.text)
+            }
+        }
+        else if (match[1].includes('%')) { var split = match[1].split('%'), sonsayibol = split[1], ilksayibol = split[0] 
+            var result = ilksayibol % sonsayibol
+            try { await message.client.sendMessage(message.jid,'*Hesaplama Yapıldı ✅*\n*Sonuç:* ' + result, MessageType.text) }
+            catch (err) { return await message.client.sendMessage(message.jid,'*Hesaplama Yapılamadı ❌*\n*Hata:* \n' + err,MessageType.text)
+            }
+        }
+        else if (!match[1].includes('%') || !match[1].includes('-') || !match[1].includes('+') || !match[1].includes('x') || !match[1].includes('/') ) {
+            return await message.client.sendMessage(message.jid,'*Lütfen Geçerli Olan Şekilde Kullanın!* \n*.calc 1 + 2*\n*.calc 3 x 5*\n*.calc 10 / 5*\n*.calc 5 - 2* \n*.calc 100 % 5*', MessageType.text)
+        }
+    }
+    else {
+        if (message.reply_message.length < 4) { return await message.client.sendMessage(message.jid,'*Lütfen Geçerli Olan Şekilde Bir Mesaja Yanıt Verin!* \n*1 + 2*\n*3 x 5*\n*10 / 5*\n*5 - 2* \n*100 % 5*', MessageType.text) }
+        if (message.reply_message.text.includes('+')) { var split = message.reply_message.text.split('+'), sonsayi = split[1], ilksayi = split[0]
+            var result = ilksayi + sonsayi
+            try { await message.client.sendMessage(message.jid,'*Hesaplama Yapıldı ✅*\n*Sonuç:* ' + result, MessageType.text) }
+            catch (err) { return await message.client.sendMessage(message.jid,'*Hesaplama Yapılamadı ❌*\n*Hata:* \n' + err,MessageType.text);
+            }
+        }
+        else if (message.reply_message.text.includes('-')) { var split = message.reply_message.text.split('-'), sonsayicik = split[1], ilksayicik = split[0] 
+            var result = ilksayicik - sonsayicik
+            try { await message.client.sendMessage(message.jid,'*Hesaplama Yapıldı ✅*\n*Sonuç:* ' + result, MessageType.text) }
+            catch (err) { return await message.client.sendMessage(message.jid,'*Hesaplama Yapılamadı ❌*\n*Hata:* \n' + err,MessageType.text);
+            }
+        }
+        else if (message.reply_message.text.includes('x')) { var split = message.reply_message.text.split('x'), sonsayicarp = split[1], ilksayicarp = split[0] 
+            var result = ilksayicarp * sonsayicarp
+            try { await message.client.sendMessage(message.jid,'*Hesaplama Yapıldı ✅*\n*Sonuç:* ' + result, MessageType.text) }
+            catch (err) { return await message.client.sendMessage(message.jid,'*Hesaplama Yapılamadı ❌*\n*Hata:* \n' + err,MessageType.text);
+            }
+        }
+        else if (message.reply_message.text.includes('/')) { var split = message.reply_message.text.split('/'), sonsayibol = split[1], ilksayibol = split[0] 
+            var result = ilksayibol / sonsayibol
+            try { await message.client.sendMessage(message.jid,'*Hesaplama Yapıldı ✅*\n*Sonuç:* ' + result, MessageType.text) }
+            catch (err) { return await message.client.sendMessage(message.jid,'*Hesaplama Yapılamadı ❌*\n*Hata:* \n' + err,MessageType.text)
+            }
+        }
+        else if (message.reply_message.text.includes('%')) { var split = message.reply_message.text.split('%'), sonsayibol = split[1], ilksayibol = split[0] 
+            var result = ilksayibol % sonsayibol
+            try { await message.client.sendMessage(message.jid,'*Hesaplama Yapıldı ✅*\n*Sonuç:* ' + result, MessageType.text) }
+            catch (err) { return await message.client.sendMessage(message.jid,'*Hesaplama Yapılamadı ❌*\n*Hata:* \n' + err,MessageType.text)
+            }
+        }
+        else if (!message.reply_message.text.includes('%') || !message.reply_message.text.includes('-') || !message.reply_message.text.includes('+') || !message.reply_message.text.includes('x') || !message.reply_message.text.includes('/') ) {
+            return await message.client.sendMessage(message.jid,'*Lütfen Geçerli Olan Şekilde Kullanın!* \n*.calc 1 + 2*\n*.calc 3 x 5*\n*.calc 10 / 5*\n*.calc 5 - 2* \n*.calc 100 % 5*', MessageType.text)
+        }
+    }
+}));
 
 Asena.addCommand({pattern: 'speedtest', fromMe: true, desc: Lang.SPEEDTEST_DESC}, (async (message, match) => {
     var msg = await message.reply(Lang.SPEEDTESTING);
@@ -52,124 +125,3 @@ Asena.addCommand({pattern: 'ping', fromMe: true, deleteCommand: false, desc: Lan
   await message.client.sendMessage(
     message.jid,'*Pong!*\n```' + (end - start) + 'ms```', MessageType.text);
 }));
-
-if (Config.WORKTYPE == 'private') {
-
-    Asena.addCommand({pattern: 'short ?(.*)', fromMe: true, desc: Lang.URL}, (async (message, match) => {
-
-        if (match[1] === '') return await message.client.sendMessage(message.jid, SLang.LİNK, MessageType.text);
-
-        TinyURL.shorten(`${match[1]}`, async(res, err) => {
-          if (err)
-            await message.client.sendMessage(message.jid, '*#### Error! ####*\n\n' + '```' + err + '```', MessageType.text);
-
-            await message.client.sendMessage(message.jid,`*Original Link:* ${match[1]}\n*Short Link:* ` + res, MessageType.text)
-        });
-    }));
-    Asena.addCommand({pattern: 'calc ?(.*)', fromMe: true, desc: Lang.CALC }, (async (message, match) => {
-        if (match[1].length < 4) { return await message.client.sendMessage(message.jid,Lang.VALİD, MessageType.text) }
-        if (match[1].includes('+')) { var split = match[1].split('+'), sonsayi = split[1], ilksayi = split[0]
-            var result = -(-ilksayi - sonsayi)
-            try { await message.client.sendMessage(message.jid,Lang.SUC + result, MessageType.text) }
-            catch (err) { return await message.client.sendMessage(message.jid,Lang.UNSUC + err,MessageType.text);
-            }
-        }
-        else if (match[1].includes('-')) { var split = match[1].split('-'), sonsayicik = split[1], ilksayicik = split[0] 
-            var result = ilksayicik - sonsayicik
-            try { await message.client.sendMessage(message.jid,Lang.SUC + result, MessageType.text) }
-            catch (err) { return await message.client.sendMessage(message.jid,Lang.UNSUC + err,MessageType.text);
-            }
-        }
-        else if (match[1].includes('x')) { var split = match[1].split('x'), sonsayicarp = split[1], ilksayicarp = split[0] 
-            var result = ilksayicarp * sonsayicarp
-            try { await message.client.sendMessage(message.jid,Lang.SUC + result, MessageType.text) }
-            catch (err) { return await message.client.sendMessage(message.jid,Lang.UNSUC + err,MessageType.text);
-            }
-        }
-        else if (match[1].includes('/')) { var split = match[1].split('/'), sonsayibol = split[1], ilksayibol = split[0] 
-            var result = ilksayibol / sonsayibol
-            try { await message.client.sendMessage(message.jid,Lang.SUC + result, MessageType.text) }
-            catch (err) { return await message.client.sendMessage(message.jid,Lang.UNSUC + err,MessageType.text)
-            }
-        }
-    }));
-}
-else if (Config.WORKTYPE == 'public') {
-
-    Asena.addCommand({pattern: 'short ?(.*)', fromMe: false, desc: Lang.URL}, (async (message, match) => {
-
-        if (match[1] === '') return await message.client.sendMessage(message.jid, SLang.LİNK, MessageType.text);
-
-        TinyURL.shorten(`${match[1]}`, async(res, err) => {
-          if (err)
-            await message.client.sendMessage(message.jid, '*#### Error! ####*\n\n' + '```' + err + '```', MessageType.text);
-
-            await message.client.sendMessage(message.jid,`*Original Link:* ${match[1]}\n*Short Link:* ` + res, MessageType.text)
-        });
-    }));
-    Asena.addCommand({pattern: 'short ?(.*)', fromMe: true, desc: Lang.URL, dontAddCommandList: true}, (async (message, match) => {
-
-        if (match[1] === '') return await message.client.sendMessage(message.jid, SLang.LİNK, MessageType.text);
-
-        TinyURL.shorten(`${match[1]}`, async(res, err) => {
-          if (err)
-            await message.client.sendMessage(message.jid, '*#### Error! ####*\n\n' + '```' + err + '```', MessageType.text);
-
-            await message.client.sendMessage(message.jid,`*Original Link:* ${match[1]}\n*Short Link:* ` + res, MessageType.text)
-        });
-    }));
-    Asena.addCommand({pattern: 'calc ?(.*)', fromMe: false, desc: Lang.CALC }, (async (message, match) => {
-        if (match[1].length < 4) { return await message.client.sendMessage(message.jid,Lang.VALİD, MessageType.text) }
-        if (match[1].includes('+')) { var split = match[1].split('+'), sonsayi = split[1], ilksayi = split[0]
-            var result = -(-ilksayi - sonsayi)
-            try { await message.client.sendMessage(message.jid,Lang.SUC + result, MessageType.text) }
-            catch (err) { return await message.client.sendMessage(message.jid,Lang.UNSUC + err,MessageType.text);
-            }
-        }
-        else if (match[1].includes('-')) { var split = match[1].split('-'), sonsayicik = split[1], ilksayicik = split[0] 
-            var result = ilksayicik - sonsayicik
-            try { await message.client.sendMessage(message.jid,Lang.SUC + result, MessageType.text) }
-            catch (err) { return await message.client.sendMessage(message.jid,Lang.UNSUC + err,MessageType.text);
-            }
-        }
-        else if (match[1].includes('x')) { var split = match[1].split('x'), sonsayicarp = split[1], ilksayicarp = split[0] 
-            var result = ilksayicarp * sonsayicarp
-            try { await message.client.sendMessage(message.jid,Lang.SUC + result, MessageType.text) }
-            catch (err) { return await message.client.sendMessage(message.jid,Lang.UNSUC + err,MessageType.text);
-            }
-        }
-        else if (match[1].includes('/')) { var split = match[1].split('/'), sonsayibol = split[1], ilksayibol = split[0] 
-            var result = ilksayibol / sonsayibol
-            try { await message.client.sendMessage(message.jid,Lang.SUC + result, MessageType.text) }
-            catch (err) { return await message.client.sendMessage(message.jid,Lang.UNSUC + err,MessageType.text)
-            }
-        }
-    }));
-    Asena.addCommand({pattern: 'calc ?(.*)', fromMe: true, desc: Lang.CALC, dontAddCommandList: true }, (async (message, match) => {
-        if (match[1].length < 4) { return await message.client.sendMessage(message.jid,Lang.VALİD, MessageType.text) }
-        if (match[1].includes('+')) { var split = match[1].split('+'), sonsayi = split[1], ilksayi = split[0]
-            var result = -(-ilksayi - sonsayi)
-            try { await message.client.sendMessage(message.jid,Lang.SUC + result, MessageType.text) }
-            catch (err) { return await message.client.sendMessage(message.jid,Lang.UNSUC + err,MessageType.text);
-            }
-        }
-        else if (match[1].includes('-')) { var split = match[1].split('-'), sonsayicik = split[1], ilksayicik = split[0] 
-            var result = ilksayicik - sonsayicik
-            try { await message.client.sendMessage(message.jid,Lang.SUC + result, MessageType.text) }
-            catch (err) { return await message.client.sendMessage(message.jid,Lang.UNSUC + err,MessageType.text);
-            }
-        }
-        else if (match[1].includes('x')) { var split = match[1].split('x'), sonsayicarp = split[1], ilksayicarp = split[0] 
-            var result = ilksayicarp * sonsayicarp
-            try { await message.client.sendMessage(message.jid,Lang.SUC + result, MessageType.text) }
-            catch (err) { return await message.client.sendMessage(message.jid,Lang.UNSUC + err,MessageType.text);
-            }
-        }
-        else if (match[1].includes('/')) { var split = match[1].split('/'), sonsayibol = split[1], ilksayibol = split[0] 
-            var result = ilksayibol / sonsayibol
-            try { await message.client.sendMessage(message.jid,Lang.SUC + result, MessageType.text) }
-            catch (err) { return await message.client.sendMessage(message.jid,Lang.UNSUC + err,MessageType.text)
-            }
-        }
-    }));
-}
