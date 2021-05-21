@@ -4,9 +4,8 @@ Licensed under the  GPL-3.0 License;
 you may not use this file except in compliance with the License.
 
 WhatsAsena - Yusuf Usta
-*/
 
-/*
+
 const Asena = require('../events');
 const Config = require('../config');
 const {MessageType} = require('@adiwajshing/baileys');
@@ -18,8 +17,7 @@ const Lang = Language.getString('lydia');
 
 Asena.addCommand({pattern: 'addlydia$', fromMe: true, desc: Lang.ADDLYDIA_DESC}, (async (message, match) => {
     if (!message.reply_message) return await message.reply(Lang.NEED_REPLY);
-    if (Config.COFFEEHOUSE_API_KEY == 'true') return await message.client.sendMessage(message.jid, '```You Must Set an API KEY!```\nhttps://github.com/phaticusthiccy/WhatsAsenaDuplicated/wiki/LYDIA-API-KEY', MessageType.text);
-
+    if (Config.COFFEEHOUSE_API_KEY.length < 20) return await message.reply(Lang.COFFEEHOUSE);
     var unix = Date.now() / 1000 | 0;
 
     var veriler = await LydiaDB.findAll();
@@ -42,8 +40,7 @@ Asena.addCommand({pattern: 'addlydia$', fromMe: true, desc: Lang.ADDLYDIA_DESC},
 
 Asena.addCommand({pattern: 'rmlydia$', fromMe: true, desc: Lang.RMLYDIA_DESC}, (async (message, match) => {
     if (!message.reply_message) return await message.reply(Lang.NEED_REPLY);
-    if (Config.COFFEEHOUSE_API_KEY == 'true') return await message.client.sendMessage(message.jid, '```You Must Set an API KEY!```\nhttps://github.com/phaticusthiccy/WhatsAsenaDuplicated/wiki/LYDIA-API-KEY', MessageType.text);
-
+    if (Config.COFFEEHOUSE_API_KEY.length < 20) return await message.reply(Lang.COFFEEHOUSE);
     var unix = Date.now() / 1000 | 0;
 
     var veriler = await LydiaDB.findAll();
@@ -54,7 +51,7 @@ Asena.addCommand({pattern: 'rmlydia$', fromMe: true, desc: Lang.RMLYDIA_DESC}, (
     } else {
         if (veriler[0].dataValues.users == '') return await message.reply(Lang.ALREADY_EMPTY)
         var users = veriler[0].dataValues.users.split(',');
-        if (users.includes(message.reply_message.jid.split('@')[0])) { users = users.remove(message.reply_message.jid.split('@')[0]).join(','); } else {
+        if (users.includes(message.reply_message.jid.split('@')[0])) { users = users.remove(message.reply_message.jid.split('@')[0]).join(','); } else {
             return await message.reply(Lang.NOT_ADDED);
         }
 
@@ -70,7 +67,7 @@ Asena.addCommand({pattern: 'rmlydia$', fromMe: true, desc: Lang.RMLYDIA_DESC}, (
 }));
 
 Asena.addCommand({on: 'text', fromMe: false, deleteCommand: false}, (async (message, match) => {   
-    if (Config.COFFEEHOUSE_API_KEY === false) return;
+    if (Config.COFFEEHOUSE_API_KEY.length < 20) return;
     var unix = Date.now() / 1000 | 0;
 
     var fromId;
