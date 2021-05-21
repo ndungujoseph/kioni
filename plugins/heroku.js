@@ -25,13 +25,10 @@ let baseURI = '/apps/' + Config.HEROKU.APP_NAME;
 
 Asena.addCommand({pattern: 'degis ?(.*)', fromMe: true, desc: Lang.DEGİS_DESC}, (async (message, match) => {
 
-    if (match[1] == '' && message.reply_message) {
+    if (match[1] == '') {
         return await message.client.sendMessage(message.jid, Lang.DEGİS_NONE, MessageType.text); 
     }
-    else if (match[1] !== '' && !message.reply_message) {
-        return await message.client.sendMessage(message.jid, Lang.NEED_REPLY, MessageType.text); 
-    }
-    else if (match[1] == '' && !message.reply_message) {
+    else if (!message.reply_message) {
         return await message.client.sendMessage(message.jid, Langr.NEED_REPLY, MessageType.text); 
     }
     else if (match[1] == 'ban' && message.reply_message) {
@@ -144,12 +141,10 @@ Asena.addCommand({pattern: 'degis ?(.*)', fromMe: true, desc: Lang.DEGİS_DESC},
             } 
         });
     }
-    else if ((!match[1] == 'unblock' || !match[1] == 'add' || !match[1] == 'block' || !match[1] == 'mute' || !match[1] == 'unmute' || !match[1] == 'afk' || !match[1] == 'alive' || !match[1] == 'demote' || !match[1] == 'promote' || !match[1] == 'ban' || !match[1] == 'kickme') && message.reply_message) {
+    else if (!match[1] == 'unblock' || !match[1] == 'add' || !match[1] == 'block' || !match[1] == 'mute' || !match[1] == 'unmute' || !match[1] == 'afk' || !match[1] == 'alive' || !match[1] == 'demote' || !match[1] == 'promote' || !match[1] == 'ban' || !match[1] == 'kickme' && message.reply_message) {
         return await message.client.sendMessage(message.jid, Lang.WR, MessageType.text);
     }
-    else if ((!match[1] == 'unblock' || !match[1] == 'add' || !match[1] == 'block' || !match[1] == 'mute' || !match[1] == 'unmute' || !match[1] == 'afk' || !match[1] == 'alive' || !match[1] == 'demote' || !match[1] == 'promote' || !match[1] == 'ban' || !match[1] == 'kickme') && !message.reply_message) {
-        return await message.client.sendMessage(message.jid, Lang.WR, MessageType.text);
-    }
+    
 }));
 
 
@@ -243,7 +238,7 @@ else if (Config.WORKTYPE == 'public') {
             });        
         });
     }));
-    Asena.addCommand({pattern: 'dyno', fromMe: true, desc: Lang.DYNO_DESC, dontAddCommandList: true}, (async (message, match) => {
+    Asena.addCommand({pattern: 'dyno', fromMe: true, desc: Lang.DYNO_DESC}, (async (message, match) => {
 
         heroku.get('/account').then(async (account) => {
             // have encountered some issues while calling this API via heroku-client
